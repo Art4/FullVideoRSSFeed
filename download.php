@@ -1,6 +1,10 @@
 <?php
 
-include_once('config.php');
+require(__DIR__ . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . 'autoload.php');
+
+$config = new YoutubeDownloader\Config;
+$curl = new YoutubeDownloader\Curl($config);
+
 // Check download token
 if (empty($_GET['mime']) OR empty($_GET['token']))
 {
@@ -11,12 +15,12 @@ if (empty($_GET['mime']) OR empty($_GET['token']))
 $mime = filter_var($_GET['mime']);
 $ext  = str_replace(array('/', 'x-'), '', strstr($mime, '/'));
 $url  = base64_decode(filter_var($_GET['token']));
-$name = urldecode($_GET['title']). '.' .$ext; 
+$name = urldecode($_GET['title']). '.' .$ext;
 
 // Fetch and serve
 if ($url)
 {
-	$size=get_size($url);
+	$size=$curl->get_size($url);
 	// Generate the server headers
 	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE)
 	{

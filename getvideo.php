@@ -6,22 +6,26 @@
 // Takes a VideoID and outputs a list of formats in which the video can be
 // downloaded
 
-include_once('config.php');
+require(__DIR__ . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . 'autoload.php');
+
+$config = new YoutubeDownloader\Config;
+$curl = new YoutubeDownloader\Curl($config);
+
 ob_start();// if not, some servers will show this php warning: header is already set in line 46...
 
 function clean($string) {
-   $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
-   return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+	$string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+	return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 }
 
-function formatBytes($bytes, $precision = 2) { 
-    $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'); 
-    $bytes = max($bytes, 0); 
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
-    $pow = min($pow, count($units) - 1); 
-    $bytes /= pow(1024, $pow);
-    return round($bytes, $precision) . '' . $units[$pow]; 
-} 
+function formatBytes($bytes, $precision = 2) {
+	$units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+	$bytes = max($bytes, 0);
+	$pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+	$pow = min($pow, count($units) - 1);
+	$bytes /= pow(1024, $pow);
+	return round($bytes, $precision) . '' . $units[$pow];
+}
 function is_chrome(){
 	$agent=$_SERVER['HTTP_USER_AGENT'];
 	if( preg_match("/like\sGecko\)\sChrome\//", $agent) ){	// if user agent is google chrome
@@ -77,60 +81,60 @@ if ($my_type == 'Download') {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title>Youtube Downloader</title>
-    <meta name="keywords" content="Video downloader, download youtube, video download, youtube video, youtube downloader, download youtube FLV, download youtube MP4, download youtube 3GP, php video downloader" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Youtube Downloader</title>
+	<meta name="keywords" content="Video downloader, download youtube, video download, youtube video, youtube downloader, download youtube FLV, download youtube MP4, download youtube 3GP, php video downloader" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	 <style type="text/css">
-      	body {
-	        padding-top: 40px;
-	        padding-bottom: 40px;
-	        background-color: #f5f5f5;
+	  	body {
+			padding-top: 40px;
+			padding-bottom: 40px;
+			background-color: #f5f5f5;
 	}
 
 	.download {
-	        max-width: 300px;
-	        padding: 19px 29px 29px;
-	        margin: 0 auto 20px;
-	        background-color: #fff;
-	        border: 1px solid #e5e5e5;
-	        -webkit-border-radius: 5px;
-	           -moz-border-radius: 5px;
-	                border-radius: 5px;
-	        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-	           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-	                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
+			max-width: 300px;
+			padding: 19px 29px 29px;
+			margin: 0 auto 20px;
+			background-color: #fff;
+			border: 1px solid #e5e5e5;
+			-webkit-border-radius: 5px;
+			   -moz-border-radius: 5px;
+					border-radius: 5px;
+			-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+			   -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+					box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	  }
 
-      .download .download-heading {
-      		text-align:center;
-        	margin-bottom: 10px;
-      }
+	  .download .download-heading {
+	  		text-align:center;
+			margin-bottom: 10px;
+	  }
 
-      .mime, .itag {
-      		width: 75px;
+	  .mime, .itag {
+	  		width: 75px;
 		display: inline-block;
-      }
+	  }
 
-      .itag {
-      		width: 15px;
-      }
-      
-      .size {
-      		width: 20px;
-      }
+	  .itag {
+	  		width: 15px;
+	  }
 
-      .userscript {
-        	float: right;
-       		margin-top: 5px
-      }
-	  
+	  .size {
+	  		width: 20px;
+	  }
+
+	  .userscript {
+			float: right;
+	   		margin-top: 5px
+	  }
+
 	  #info {
 			padding: 0 0 0 130px;
 			position: relative;
 			height:100px;
 	  }
-	  
+
 	  #info img{
 			left: 0;
 			position: absolute;
@@ -138,7 +142,7 @@ if ($my_type == 'Download') {
 			width:120px;
 			height:90px
 	  }
-    </style>
+	</style>
 	</head>
 <body>
 	<div class="download">
@@ -149,7 +153,7 @@ if ($my_type == 'Download') {
 /* First get the video info page for this video id */
 //$my_video_info = 'http://www.youtube.com/get_video_info?&video_id='. $my_id;
 $my_video_info = 'http://www.youtube.com/get_video_info?&video_id='. $my_id.'&asv=3&el=detailpage&hl=en_US'; //video details fix *1
-$my_video_info = curlGet($my_video_info);
+$my_video_info = $curl->get($my_video_info);
 
 /* TODO: Check return from curl for status code */
 
@@ -161,7 +165,7 @@ if($status=='fail'){
 	exit();
 }
 echo '<div id="info">';
-switch($config['ThumbnailImageMode'])
+switch($config->get('ThumbnailImageMode'))
 {
   case 2: echo '<a href="getimage.php?videoid='. $my_id .'&sz=hd" target="_blank"><img src="getimage.php?videoid='. $my_id .'" border="0" hspace="2" vspace="2"></a>'; break;
   case 1: echo '<a href="getimage.php?videoid='. $my_id .'&sz=hd" target="_blank"><img src="'. $thumbnail_url .'" border="0" hspace="2" vspace="2"></a>'; break;
@@ -177,7 +181,7 @@ if(isset($url_encoded_fmt_stream_map)) {
 	/* Now get the url_encoded_fmt_stream_map, and explode on comma */
 	$my_formats_array = explode(',',$url_encoded_fmt_stream_map);
 	if($debug) {
-		if($config['multipleIPs'] === true) {
+		if($config->get('multipleIPs') === true) {
 			echo '<pre>Outgoing IP: ';
 			print_r($outgoing_ip);
 			echo '</pre>';
@@ -200,7 +204,7 @@ if (count($my_formats_array) == 0) {
 $avail_formats[] = '';
 $i = 0;
 $ipbits = $ip = $itag = $sig = $quality = '';
-$expire = time(); 
+$expire = time();
 
 foreach($my_formats_array as $format) {
 	parse_str($format);
@@ -229,23 +233,29 @@ if ($my_type == 'Download') {
 	for ($i = 0; $i < count($avail_formats); $i++) {
 		echo '<li>';
 		echo '<span class="itag">' . $avail_formats[$i]['itag'] . '</span> ';
-		if($config['VideoLinkMode']=='direct'||$config['VideoLinkMode']=='both'){
-		$directlink = explode('.googlevideo.com/',$avail_formats[$i]['url']);
-		$directlink = 'http://redirector.googlevideo.com/' . $directlink[1] . '';
-		  echo '<a href="' . $directlink . '&title='.$cleanedtitle.'" class="mime">' . $avail_formats[$i]['type'] . '</a> ';
-		}else{
-		  echo '<span class="mime">' . $avail_formats[$i]['type'] . '</span> ';
-		echo '<small>(' .  $avail_formats[$i]['quality'];}
-		if($config['VideoLinkMode']=='proxy'||$config['VideoLinkMode']=='both')
+		if($config->get('VideoLinkMode') == 'direct' || $config->get('VideoLinkMode') == 'both')
+		{
+			$directlink = explode('.googlevideo.com/',$avail_formats[$i]['url']);
+			$directlink = 'http://redirector.googlevideo.com/' . $directlink[1] . '';
+			echo '<a href="' . $directlink . '&title='.$cleanedtitle.'" class="mime">' . $avail_formats[$i]['type'] . '</a> ';
+		}
+		else
+		{
+			echo '<span class="mime">' . $avail_formats[$i]['type'] . '</span> ';
+			echo '<small>(' .  $avail_formats[$i]['quality'];
+		}
+		if($config->get('VideoLinkMode') == 'proxy' || $config->get('VideoLinkMode') == 'both')
 			echo ' / ' . '<a href="download.php?mime=' . $avail_formats[$i]['type'] .'&title='. urlencode($my_title) .'&token='.base64_encode($avail_formats[$i]['url']) . '" class="dl">download</a>';
 		echo ')</small> '.
-			'<small><span class="size">' . formatBytes(get_size($avail_formats[$i]['url'])) . '</span></small>'.
+			'<small><span class="size">' . formatBytes($curl->get_size($avail_formats[$i]['url'])) . '</span></small>'.
 		'</li>';
 	}
 	echo '</ul><small>Note that you initiate download either by clicking video format link or click "download" to use this server as proxy.</small>';
 
-  if(($config['feature']['browserExtensions']==true)&&(is_chrome()))
-    echo '<a href="ytdl.user.js" class="userscript btn btn-mini" title="Install chrome extension to view a \'Download\' link to this application on Youtube video pages."> Install Chrome Extension </a>';
+$config_feature = $config->get('feature');
+
+if(($config_feature['browserExtensions'] == true) && (is_chrome()))
+	echo '<a href="ytdl.user.js" class="userscript btn btn-mini" title="Install chrome extension to view a \'Download\' link to this application on Youtube video pages."> Install Chrome Extension </a>';
 ?>
 
 </body>
@@ -305,15 +315,15 @@ for ($i=0; $i < count($target_formats); $i++) {
 }
 
 //echo '<p>Out of loop, best_format is '. $best_format .'</p>';
-if( (isset($best_format)) && 
-  (isset($avail_formats[$best_format]['url'])) && 
-  (isset($avail_formats[$best_format]['type'])) 
+if( (isset($best_format)) &&
+  (isset($avail_formats[$best_format]['url'])) &&
+  (isset($avail_formats[$best_format]['type']))
   ) {
 	$redirect_url = $avail_formats[$best_format]['url'].'&title='.$cleanedtitle;
 	$content_type = $avail_formats[$best_format]['type'];
 }
 if(isset($redirect_url)) {
-	header("Location: $redirect_url"); 
+	header("Location: $redirect_url");
 }
 
 } // end of else for type not being Download
