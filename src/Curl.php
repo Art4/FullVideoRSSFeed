@@ -3,7 +3,7 @@
 namespace YoutubeDownloader;
 
 /**
- * Handler
+ * Curl functions
  */
 class Curl
 {

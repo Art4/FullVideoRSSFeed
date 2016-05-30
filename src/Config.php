@@ -12,11 +12,10 @@ class Config
 		// Set your default timezone
 		// use this link: http://php.net/manual/en/timezones.php
 		'default_timezone' => 'Asia/Tehran',
+		//'default_timezone' => 'Europe/Berlin',
+		// Debug mode on/off
+		'debug' => false,
 	];
-
-	// Debug mode
-	#$debug=true; // debug mode on
-	protected $debug = false; // debug mode off
 
 	function __construct()
 	{
