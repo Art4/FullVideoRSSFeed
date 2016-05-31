@@ -21,6 +21,11 @@ $feed->set_cache_location(__DIR__ . '/cache');
 // Run SimplePie.
 $feed->init();
 
+if ( $feed->error() !== null )
+{
+	die($feed->error());
+}
+
 $ssl      = ( ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' );
 $sp       = strtolower( $_SERVER['SERVER_PROTOCOL'] );
 $protocol = substr( $sp, 0, strpos( $sp, '/' ) ) . ( ( $ssl ) ? 's' : '' );
@@ -43,12 +48,15 @@ foreach ($feed->get_items() as $item)
 {
 	$video_id = substr(strstr($item->get_permalink(), 'v='), 2, 11);
 
+	$enclosure = $item->get_enclosure();
+
 	$rssfeed .= '<item>';
 	$rssfeed .= '<title>' . $item->get_title() . '</title>';
-	$rssfeed .= '<description>' . $item->get_description() . '</description>';
+	$rssfeed .= '<description>' . $enclosure->get_description() . '</description>';
 	$rssfeed .= '<link>' . $item->get_permalink() . '</link>';
 	$rssfeed .= '<pubDate>' . $item->get_date('D, d M Y H:i:s O') . '</pubDate>';
 	$rssfeed .= '<enclosure url="' . $base_url . 'download.php?v=' . $video_id . '" type="video/mp4" />';
+	//$rssfeed .= '<media:thumbnail url="' . $enclosure->get_thumbnail() . '" />';
 	$rssfeed .= '</item>';
 }
 
