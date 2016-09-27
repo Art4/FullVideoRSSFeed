@@ -3,7 +3,7 @@
 Fork of [YouTube Downloader from John Eckman](https://github.com/jeckman/YouTube-Downloader)
 License: GPL v2 or Later
 
-This PHP script creates a RSS feed for a YouTube channel with full video download. So you can subscribe to channels with and podcast app and watch the videos there.  
+This PHP script creates a RSS feed for a YouTube channel with full video download. So you can subscribe to channels with a podcast app and watch the videos there.  
 
 NOTE: Full YouTube RSS-Feed does not work with videos using a cipher signature, see https://github.com/jeckman/YouTube-Downloader/issues/9
 
