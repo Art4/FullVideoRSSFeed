@@ -1,7 +1,9 @@
 {
     "require": {
         "php": ">=5.4",
-        "simplepie/simplepie": "^1.4"
+        "simplepie/simplepie": "^1.4",
+        "twbs/bootstrap": "4.0.0-alpha.4",
+        "fortawesome/font-awesome": "^4.6"
     },
     "autoload": {
         "psr-4": {
