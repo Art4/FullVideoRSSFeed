@@ -33,9 +33,9 @@ if ( isset($_GET['channel_url']) )
 
 	$url = '.';
 
-	if ( isset($_SERVER['SCRIPT_URL']) )
+	if ( isset($_SERVER['SCRIPT_URI']) )
 	{
-		$url = rtrim($_SERVER['SCRIPT_URL'], '/');
+		$url = rtrim($_SERVER['SCRIPT_URI'], '/');
 	}
 
 	$url .= '/rss.php?channel_id=' . $channel;
