@@ -39,9 +39,13 @@ if ( isset($_GET['channel_url']) )
 	}
 
 	$url .= '/rss.php?channel_id=' . $channel;
+
+	$qrcode = './qrcode.php?url=' . urlencode($url);
 ?>
 <div class="alert alert-success">
 	<p><a href="<?php echo $url; ?>" class="alert-link"><i class="fa fa-rss" aria-hidden="true"></i> RSS-Feed</a></p>
+	<p><i class="fa fa-qrcode" aria-hidden="true"></i> QRCode:</p>
+	<img src="<?php echo $qrcode ?>" />
 </div>
 <?php
 }
