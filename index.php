@@ -11,7 +11,7 @@
 
 <body>
 <div class="container">
-	<h1>Full Youtube RSS-Feed</h1>
+	<a href="./"><h1><i class="fa fa-youtube-play" aria-hidden="true"></i> <i class="fa fa-rss" aria-hidden="true"></i> Full Youtube RSS-Feed</h1></a>
 	<p>Subscribe a RSS feed from a Youtube channel with full video download.</p>
 <?php
 
@@ -53,6 +53,10 @@ if ( isset($_GET['channel_url']) )
 	</div>
 	<button type="submit" class="btn btn-default">Submit</button>
 </form>
+<hr>
+<footer>
+<p><a href="https://github.com/Art4/YouTube-Downloader"><i class="fa fa-github" aria-hidden="true"></i> Fork me on Github</a> | <a href="https://twitter.com/weigandtLabs"><i class="fa fa-twitter" aria-hidden="true"></i> @weigandtLabs</a></p>
+</footer>
 </div>
 </body>
 </html>
