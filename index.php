@@ -55,7 +55,7 @@ if ( isset($_GET['channel_url']) )
 		<label for="channel_url">Channel-ID or channel url:</label>
 		<input type="text" class="form-control" id="channel_url" name="channel_url" placeholder="https://youtube.com/channel/UC...">
 	</div>
-	<button type="submit" class="btn btn-default">Submit</button>
+	<button type="submit" class="btn btn-primary">Submit</button>
 </form>
 <hr>
 <footer>
