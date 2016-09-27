@@ -9,9 +9,9 @@ if ( isset($_GET['url']) )
 {
 	$url = urldecode($_GET['url']);
 }
-elseif ( isset($_SERVER['SCRIPT_URL']) )
+elseif ( isset($_SERVER['SCRIPT_URI']) )
 {
-	$url = $_SERVER['SCRIPT_URL'];
+	$url = $_SERVER['SCRIPT_URI'];
 }
 else
 {
