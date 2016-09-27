@@ -7,6 +7,8 @@ This PHP script creates a RSS feed for a YouTube channel with full video downloa
 
 NOTE: Full YouTube RSS-Feed does not work with videos using a cipher signature, see https://github.com/jeckman/YouTube-Downloader/issues/9
 
+![full youtube rss-feed_02](https://cloud.githubusercontent.com/assets/2162994/18888898/9c5c2296-84fa-11e6-9fd0-08fa7610c0d2.png)
+
 ## Requirements
 
 - Git
