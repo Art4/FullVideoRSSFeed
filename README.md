@@ -12,7 +12,7 @@ NOTE: Full YouTube RSS-Feed does not work with videos using a cipher signature, 
 ## Requirements
 
 - Git
-- >= PHP 4.5
+- PHP 5.4+
 - [Composer](https://getcomposer.org)
 
 ## Install
